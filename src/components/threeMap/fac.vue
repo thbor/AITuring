@@ -9,6 +9,10 @@
   // import MTLLoader from  'three-mtl-loader';
   // import OBJLoader from  'three-obj-loader';
   import {CSS2DRenderer, CSS2DObject} from 'three-css2drender';
+  //three js状态插件
+  import Stats from 'stats-js';
+  import * as dat from 'dat.gui';
+  import datUI from './datUI'
 
   const OrbitControls = require('three-orbit-controls')(THREE);
   export default {
@@ -28,11 +32,16 @@
         biaozhudiv: '',
         img: '',
         biaozhuLabel: '',
-        axesHelper:''
+        axesHelper:'',
+        stats:'',
+        gui:''
       }
     },
     mounted() {
       this.init();
+      this.initStats();
+      this.initDatUI();
+      this.initOrbitControls();
       this.addObj();
       this.animate();
     },
@@ -52,14 +61,7 @@
         this.camera = new THREE.PerspectiveCamera(this.fov, window.innerWidth / window.innerHeight, 0.1, 2000);
         this.camera.position.set(800, 300, 800);
         this.camera.lookAt(this.scene.position);
-        //初始化控制器
-        this.controls = new OrbitControls(this.camera);
-        this.controls.target.set(0, 0, 0);
-        //视角距离
-        this.controls.minDistance = 80;
-        this.controls.maxDistance = 500;
-        this.controls.maxPolarAngle = Math.PI / 3;
-        this.controls.update();
+       
         //渲染
         this.renderer = new THREE.WebGLRenderer({
           alpha: true,
@@ -78,6 +80,49 @@
         container.appendChild(this.labelRenderer.domElement);
         window.addEventListener('resize', this.onWindowResize, false);//添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
       },
+      //three.js 状态插件
+      initStats(){
+        this.stats = new Stats();
+        this.stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild(this.stats.dom);
+      },
+      //参数调试工具初始化
+      initDatUI(){
+        this.gui = new dat.GUI();
+        this.gui.add(datUI,'message').name('消息');
+        this.gui.add(datUI,'speed',-20,20);
+        this.gui.add(datUI,'displayOutline');
+      },
+      //轨道控制器
+      initOrbitControls(){
+        //初始化控制器-轨道控制器
+        this.controls = new OrbitControls(this.camera);
+        this.controls.target.set(0, 0, 0);
+        //视角距离
+        this.controls.minDistance = 80;
+        this.controls.maxDistance = 500;
+        this.controls.maxPolarAngle = Math.PI / 3;
+        //旋转速度
+        this.controls.rotateSpeed = 5;
+        //变焦速度
+        this.controls.zoomSpeed = 3;
+        //平移速度
+        this.controls.panSpeed = 0.8;
+        //是否不变焦
+        this.controls.noZoom = false;
+        //是否不平移
+        this.controls.noPan = false;
+        //是否开启自动旋转
+        this.controls.autoRotate = true;
+        //围绕目标旋转的速度将有多快，默认值为2.0
+        this.controls.autoRotateSpeed =  datUI.speed;
+        //是否开启移动惯性
+        this.controls.staticMoving = false;
+        //动态阻尼系数 就是灵敏度
+        this.controls.dynamicDampingFactor = 0.3;
+
+        this.controls.update();
+      },
       onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
@@ -85,7 +130,11 @@
         this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
       },
       animate() {
+        this.stats.begin();
+        this.controls.autoRotateSpeed = datUI.speed;
+        this.controls.update();
         this.render(this.scene,this.camera);
+        this.stats.end();
         requestAnimationFrame(this.animate);
       },
       render() {
