@@ -32,11 +32,9 @@
         biaozhudiv: '',
         img: '',
         biaozhuLabel: '',
-        axesHelper:'',    //非公有屬性
-        stats:'',         //非公有屬性
-        gui:''            //非公有屬性
-
-
+        axesHelper:'',
+        stats:'',
+        gui:''
       }
     },
     mounted() {
@@ -52,35 +50,35 @@
     // },
     methods: {
       init() {
-        this.scene = new THREE.Scene();
-        this.scene.add(new THREE.AmbientLight(0x999999));//环境光
-        this.light = new THREE.DirectionalLight(0xdfebff, 0.40);//从正上方（不是位置）照射过来的平行光，0.45的强度
-        this.light.position.set(50, 300, 100);
-        this.light.position.multiplyScalar(0.3);
-        this.scene.add(new THREE.AxesHelper(250));
-        this.scene.add(this.light);
-        //初始化相机
-        this.camera = new THREE.PerspectiveCamera(this.fov, window.innerWidth / window.innerHeight, 0.1, 2000);
-        this.camera.position.set(800, 300, 800);
-        this.camera.lookAt(this.scene.position);
+        // this.scene = new THREE.Scene();
+        // this.scene.add(new THREE.AmbientLight(0x999999));//环境光
+        // this.light = new THREE.DirectionalLight(0xdfebff, 0.40);//从正上方（不是位置）照射过来的平行光，0.45的强度
+        // this.light.position.set(50, 300, 100);
+        // this.light.position.multiplyScalar(0.3);
+        // this.scene.add(new THREE.AxesHelper(250));
+        // this.scene.add(this.light);
+        // //初始化相机
+        // this.camera = new THREE.PerspectiveCamera(this.fov, window.innerWidth / window.innerHeight, 0.1, 2000);
+        // this.camera.position.set(800, 300, 800);
+        // this.camera.lookAt(this.scene.position);
        
-        //渲染
-        this.renderer = new THREE.WebGLRenderer({
-          alpha: true,
-        });
-        //会在body里面生成一个canvas标签,
-        this.renderer.setPixelRatio(window.devicePixelRatio);//为了兼容高清屏幕
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        // //渲染
+        // this.renderer = new THREE.WebGLRenderer({
+        //   alpha: true,
+        // });
+        // //会在body里面生成一个canvas标签,
+        // this.renderer.setPixelRatio(window.devicePixelRatio);//为了兼容高清屏幕
+        // this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const container = document.getElementById('container');
-        container.appendChild(this.renderer.domElement);
-        //标注渲染
-        this.labelRenderer = new CSS2DRenderer();
-        this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
-        this.labelRenderer.domElement.style.position = 'absolute';
-        this.labelRenderer.domElement.style.top = 0;
-        container.appendChild(this.labelRenderer.domElement);
-        window.addEventListener('resize', this.onWindowResize, false);//添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
+        // const container = document.getElementById('container');
+        // container.appendChild(this.renderer.domElement);
+        // //标注渲染
+        // this.labelRenderer = new CSS2DRenderer();
+        // this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        // this.labelRenderer.domElement.style.position = 'absolute';
+        // this.labelRenderer.domElement.style.top = 0;
+        // container.appendChild(this.labelRenderer.domElement);
+        // window.addEventListener('resize', this.onWindowResize, false);//添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
       },
       //three.js 状态插件
       initStats(){

@@ -28,6 +28,14 @@ const routes = [
     }
   },
   {
+    path: '/demo',
+    name: 'demo',
+    component: r => require.ensure([], () => r(require('../components/threeMap/demo.vue')), 'demo'),
+    meta: {
+      title: 'demo'
+    }
+  },
+  {
     path: '/alarmPage',
     name: 'alarmPage',
     component: r => require.ensure([], () => r(require('../components/alarmPage/alarmPage')), 'alarmPage'),
