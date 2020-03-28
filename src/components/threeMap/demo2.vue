@@ -14,7 +14,7 @@
   import * as dat from 'dat.gui';
   import datUI from './datUI'
 
-  const OrbitControls = require('three-orbit-controls')(THREE);
+  // const OrbitControls = require('three-orbit-controls')(THREE);
   export default {
     name: "fac",
     data() {
@@ -39,11 +39,11 @@
     },
     mounted() {
       this.init();
-      this.initStats();
-      this.initDatUI();
-      this.initOrbitControls();
-      this.addObj();
-      this.animate();
+      // this.initStats();
+      // this.initDatUI();
+      // this.initOrbitControls();
+      // this.addObj();
+      // this.animate();
     },
     // destroyed(){
     //   console.log("实例已经被销毁");
@@ -94,49 +94,49 @@
         this.gui.add(datUI,'displayOutline');
       },
       //轨道控制器
-      initOrbitControls(){
-        //初始化控制器-轨道控制器
-        this.controls = new OrbitControls(this.camera);
-        this.controls.target.set(0, 0, 0);
-        //视角距离
-        this.controls.minDistance = 80;
-        this.controls.maxDistance = 500;
-        this.controls.maxPolarAngle = Math.PI / 3;
-        //旋转速度
-        this.controls.rotateSpeed = 5;
-        //变焦速度
-        this.controls.zoomSpeed = 3;
-        //平移速度
-        this.controls.panSpeed = 0.8;
-        //是否不变焦
-        this.controls.noZoom = false;
-        //是否不平移
-        this.controls.noPan = false;
-        //是否开启自动旋转
-        this.controls.autoRotate = true;
-        //围绕目标旋转的速度将有多快，默认值为2.0
-        this.controls.autoRotateSpeed =  datUI.speed;
-        //是否开启移动惯性
-        this.controls.staticMoving = false;
-        //动态阻尼系数 就是灵敏度
-        this.controls.dynamicDampingFactor = 0.3;
+      // initOrbitControls(){
+      //   //初始化控制器-轨道控制器
+      //   this.controls = new OrbitControls(this.camera);
+      //   this.controls.target.set(0, 0, 0);
+      //   //视角距离
+      //   this.controls.minDistance = 80;
+      //   this.controls.maxDistance = 500;
+      //   this.controls.maxPolarAngle = Math.PI / 3;
+      //   //旋转速度
+      //   this.controls.rotateSpeed = 5;
+      //   //变焦速度
+      //   this.controls.zoomSpeed = 3;
+      //   //平移速度
+      //   this.controls.panSpeed = 0.8;
+      //   //是否不变焦
+      //   this.controls.noZoom = false;
+      //   //是否不平移
+      //   this.controls.noPan = false;
+      //   //是否开启自动旋转
+      //   this.controls.autoRotate = true;
+      //   //围绕目标旋转的速度将有多快，默认值为2.0
+      //   this.controls.autoRotateSpeed =  datUI.speed;
+      //   //是否开启移动惯性
+      //   this.controls.staticMoving = false;
+      //   //动态阻尼系数 就是灵敏度
+      //   this.controls.dynamicDampingFactor = 0.3;
 
-        this.controls.update();
-      },
+      //   this.controls.update();
+      // },
       onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
       },
-      animate() {
-        this.stats.begin();
-        this.controls.autoRotateSpeed = datUI.speed;
-        this.controls.update();
-        this.render(this.scene,this.camera);
-        this.stats.end();
-        requestAnimationFrame(this.animate);
-      },
+      // animate() {
+      //   this.stats.begin();
+      //   this.controls.autoRotateSpeed = datUI.speed;
+      //   this.controls.update();
+      //   this.render(this.scene,this.camera);
+      //   this.stats.end();
+      //   requestAnimationFrame(this.animate);
+      // },
       render() {
         this.renderer.render(this.scene, this.camera);
         this.labelRenderer.render(this.scene, this.camera);
