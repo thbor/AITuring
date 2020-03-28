@@ -74,6 +74,7 @@
         this.labelRenderer.domElement.style.top = 0;
         container.appendChild(this.labelRenderer.domElement);
         window.addEventListener('resize', this.onWindowResize, false);//添加窗口监听事件（resize-onresize即窗口或框架被重新调整大小）
+       
       },
       onWindowResize() {
         this.camera.aspect = window.innerWidth / window.innerHeight;

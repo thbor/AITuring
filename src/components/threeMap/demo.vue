@@ -1,7 +1,6 @@
 <!--suppress ALL -->
 <template>
   <div id="container">
-    <Demo2 :setData="data" />
   </div>
 </template>
 <script>
@@ -10,7 +9,6 @@
   // import MTLLoader from  'three-mtl-loader';
   // import OBJLoader from  'three-obj-loader';
   import {CSS2DRenderer, CSS2DObject} from 'three-css2drender';
-  import Demo2 from './demo2';
   import {setScene,setObjDemo } from '../../service/Manager'
   //three js状态插件
   import Stats from 'stats-js';
@@ -19,38 +17,35 @@
 
   const OrbitControls = require('three-orbit-controls')(THREE);
   export default {
-    components:{
-      Demo2
-    },
+ 
     name: "demo",
     data() {
       return {
-        scene:'',
         data:{
-        labelRenderer: '',
-        light: '',
-        camera: '',
-        controls: '',
-        renderer: '',
-        geometry: '',
-        material: '',
-        cube: '',
-        fov: 60,
-        biaozhudiv: '',
-        img: '',
-        biaozhuLabel: '',
-        axesHelper:'',
-        stats:'',
-        gui:'',
+          scene:'',
+          labelRenderer: '',
+          light: '',
+          camera: '',
+          controls: '',
+          renderer: '',
+          geometry: '',
+          material: '',
+          cube: '',
+          fov: 60,
+          biaozhudiv: '',
+          img: '',
+          biaozhuLabel: '',
+          axesHelper:'',
+          stats:'',
+          gui:'',
         //一個舞台上的對象
         demoObj1:{
           path:'/static/model/facilitys/',
           load:'scene.mtl',
           dataLoadObj:'scene.obj',
-          scale:'0.4, 0.4, 0.4',
-          position:'-350, 0, 0'
+          scale:{x:0.4, y:0.4, z:0.4},
+          position:{x:-350, y:0, z:0}
         }
-        
         },
         
       }
@@ -58,14 +53,14 @@
     mounted() {
       this.initScene();
       this.addObj();
+      this.animate();
     },
     // destroyed(){
     //   console.log("实例已经被销毁");
     // },
     methods: {
       initScene(){
-        this.scene = setScene(this.data);
-        console.log("scene",this.scene)
+        this.data = setScene(this.data);
         const container = document.getElementById('container');
         container.appendChild(this.data.renderer.domElement);
         container.appendChild(this.data.labelRenderer.domElement);
@@ -74,11 +69,16 @@
       addObj(){
         //添加一個對象到舞台
         setObjDemo(this.data,this.data.demoObj1)
-      }
-    //   setOption: function() {
-    //   let config = { notMerge: true };
-    //   this.chart.setOption(this.option, config);
-    // },
+      },
+      animate() {
+        requestAnimationFrame(this.animate);
+        this.render();
+      },
+      render() {
+        this.data.renderer.render(this.data.scene, this.data.camera);
+        this.data.labelRenderer.render(this.data.scene, this.data.camera);
+      },
+   
     }
   }
 </script>

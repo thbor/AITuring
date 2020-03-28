@@ -31,15 +31,15 @@ export const setScene = data => {
 };
 export const setObjDemo=(data,demoObj1)=>{
   console.log("添加舞台元素",data,demoObj1)
-  let t = new MTLLoader().setPath(demoObj1.path).load(demoObj1.load, materials => {
+  new MTLLoader().setPath(demoObj1.path).load(demoObj1.load, materials => {
     console.log("materials", materials);
     materials.preload();
     new OBJLoader().setMaterials(materials).setPath(demoObj1.path).load(demoObj1.dataLoadObj, obj => {
-      obj.scale.set(demoObj1.scale);
-      obj.position.set(demoObj1.position);
+      obj.scale.set(demoObj1.scale.x,demoObj1.scale.y,demoObj1.scale.z);
+      obj.position.set(demoObj1.position.x,demoObj1.position.y,demoObj1.position.z);
       console.log("元素",obj)
       data.scene.add(obj);
     });
   });
-  return t;
+  
 }

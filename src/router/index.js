@@ -36,6 +36,14 @@ const routes = [
     }
   },
   {
+    path: '/demo2',
+    name: 'demo2',
+    component: r => require.ensure([], () => r(require('../components/threeMap/demo2.vue')), 'demo2'),
+    meta: {
+      title: 'demo2'
+    }
+  },
+  {
     path: '/alarmPage',
     name: 'alarmPage',
     component: r => require.ensure([], () => r(require('../components/alarmPage/alarmPage')), 'alarmPage'),
