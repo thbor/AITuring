@@ -1,7 +1,7 @@
 <template>
   <div>
     
-    <div id="three"></div>
+    <div id="three" class="container"></div>
   </div>
 </template>
 <script>
@@ -24,7 +24,9 @@ export default {
       z:0.02,
       orbitControls:"",
       clock:"",
-      container:""
+      container:"",
+      height:"",
+      width:"",
 
     }
   },
@@ -39,6 +41,8 @@ export default {
   },
   methods:{
     init(){
+        this.width = window.innerWidth;
+        this.height = window.innerHeight
         this.scene = new THREE.Scene();
         this.scene.add(new THREE.AmbientLight(0x999999));//环境光
         this.light = new THREE.DirectionalLight(0xdfebff, 0.45);//从正上方（不是位置）照射过来的平行光，0.45的强度
@@ -51,6 +55,8 @@ export default {
         this.camera.lookAt(this.scene.position);
         //初始化控制器
         this.controls = new OrbitControls(this.camera);
+        this.controls.minDistance = 80;
+        this.controls.maxDistance = 400;
         // this.controls.target.set(0, 0, 0);
         // this.controls.minDistance = 80;
         // this.controls.maxDistance = 400;
@@ -61,16 +67,19 @@ export default {
           alpha: true,
         });//会在body里面生成一个canvas标签,
         this.renderer.setPixelRatio(window.devicePixelRatio);//为了兼容高清屏幕
-        this.renderer.setSize(window.innerWidth-500, window.innerHeight-500);
+        // this.renderer.style.top = 100
+        console.log(":寬高",this.width,this.height)
+        this.renderer.setSize(this.width, this.height);
         // this.renderer.setSize(window.innerWidth, window.innerHeight);
 
         this.container = document.getElementById('three');
         this.container.appendChild(this.renderer.domElement);
         //标注渲染
         this.labelRenderer = new CSS2DRenderer();
-        this.labelRenderer.setSize(window.innerWidth-500, window.innerHeight-500);
+        console.log("寬高",window.innerWidth,window.innerHeight)
+        this.labelRenderer.setSize(this.width, this.height);
         this.labelRenderer.domElement.style.position = 'absolute';
-        this.labelRenderer.domElement.style.top = 0;
+        this.labelRenderer.domElement.style.top = '100px';
         this.container.appendChild(this.labelRenderer.domElement);
     },
   
@@ -105,16 +114,16 @@ export default {
      //旋轉
       requestAnimationFrame(this.animate)
       //正方體旋轉的方向和速度
-      this.cubic.rotation.x+=this.x
-      this.cubic.rotation.y+=this.y
-      this.cubic.rotation.z+=this.z
+      // this.cubic.rotation.x+=this.x
+      // this.cubic.rotation.y+=this.y
+      // this.cubic.rotation.z+=this.z
       //必須有這句話才能渲染出來
       // delta = this.clock.getDelta();
       // this.orbitControls.update(delta);
       //軌道控制器
       this.controls.autoRotate = true;
       this.controls.autoRotateSpeed = 1;
-      this.controls.target = new THREE.Vector3(.5, .5, .5);
+      this.controls.target = new THREE.Vector3(this.x, this.y, this.z);
 
       this.controls.update();
       this.renderer.render(this.scene,this.camera)
@@ -128,5 +137,4 @@ export default {
 }
 </script>
 <style scoped>
-
 </style>
