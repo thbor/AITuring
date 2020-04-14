@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <div id="three" class="container"></div>
   </div>
 </template>
@@ -32,10 +31,11 @@ export default {
   },
   mounted(){
     this.init();
-    this.addObj(0,40,0)
-    this.addObj(40,0,0)
-    this.addObj(0,0,40)
-    this.addCubic();
+    // this.addObjDemo()
+    // this.addObj(0,40,0)
+    // this.addObj(40,0,0)
+    // this.addObj(0,0,40)
+    // this.addCubic();
     // this.rotate()
     this.animate()
   },
@@ -57,18 +57,12 @@ export default {
         this.controls = new OrbitControls(this.camera);
         this.controls.minDistance = 80;
         this.controls.maxDistance = 400;
-        // this.controls.target.set(0, 0, 0);
-        // this.controls.minDistance = 80;
-        // this.controls.maxDistance = 400;
-        // this.controls.maxPolarAngle = Math.PI / 3;
-        // this.controls.update();
         //渲染
         this.renderer = new THREE.WebGLRenderer({
           alpha: true,
         });//会在body里面生成一个canvas标签,
         this.renderer.setPixelRatio(window.devicePixelRatio);//为了兼容高清屏幕
         // this.renderer.style.top = 100
-        console.log(":寬高",this.width,this.height)
         this.renderer.setSize(this.width, this.height);
         // this.renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -76,11 +70,12 @@ export default {
         this.container.appendChild(this.renderer.domElement);
         //标注渲染
         this.labelRenderer = new CSS2DRenderer();
-        console.log("寬高",window.innerWidth,window.innerHeight)
         this.labelRenderer.setSize(this.width, this.height);
         this.labelRenderer.domElement.style.position = 'absolute';
         this.labelRenderer.domElement.style.top = '100px';
         this.container.appendChild(this.labelRenderer.domElement);
+        // console.log(999,"init",this.scene)
+        this.$emit("sceneData",this.scene)
     },
   
     addObj(x,y,z){
@@ -100,6 +95,7 @@ export default {
       geometry.colors.push( color1 );
       var line = new THREE.Line( geometry, material, THREE.LineSegments  );
       this.scene.add(line);
+      
     },
     addCubic(){
       
