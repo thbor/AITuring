@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <div id="three"></div>
   </div>
 </template>
@@ -18,6 +19,12 @@ export default {
       width:"",
       height:"",
       cubic:"",
+      x:0.02,
+      y:0.02,
+      z:0.02,
+      orbitControls:"",
+      clock:"",
+      container:""
 
     }
   },
@@ -44,27 +51,29 @@ export default {
         this.camera.lookAt(this.scene.position);
         //初始化控制器
         this.controls = new OrbitControls(this.camera);
-        this.controls.target.set(0, 0, 0);
-        this.controls.minDistance = 80;
-        this.controls.maxDistance = 400;
-        this.controls.maxPolarAngle = Math.PI / 3;
-        this.controls.update();
+        // this.controls.target.set(0, 0, 0);
+        // this.controls.minDistance = 80;
+        // this.controls.maxDistance = 400;
+        // this.controls.maxPolarAngle = Math.PI / 3;
+        // this.controls.update();
         //渲染
         this.renderer = new THREE.WebGLRenderer({
           alpha: true,
         });//会在body里面生成一个canvas标签,
         this.renderer.setPixelRatio(window.devicePixelRatio);//为了兼容高清屏幕
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setSize(window.innerWidth-500, window.innerHeight-500);
+        // this.renderer.setSize(window.innerWidth, window.innerHeight);
 
-        const container = document.getElementById('three');
-        container.appendChild(this.renderer.domElement);
+        this.container = document.getElementById('three');
+        this.container.appendChild(this.renderer.domElement);
         //标注渲染
         this.labelRenderer = new CSS2DRenderer();
-        this.labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        this.labelRenderer.setSize(window.innerWidth-500, window.innerHeight-500);
         this.labelRenderer.domElement.style.position = 'absolute';
         this.labelRenderer.domElement.style.top = 0;
-        container.appendChild(this.labelRenderer.domElement);
+        this.container.appendChild(this.labelRenderer.domElement);
     },
+  
     addObj(x,y,z){
       //1.定義一個幾何體
       var geometry = new THREE.Geometry();
@@ -93,16 +102,21 @@ export default {
       this.scene.add(this.cubic)
     },
     animate(){
-     console.log("rotate")
      //旋轉
       requestAnimationFrame(this.animate)
-      //旋轉的方向和速度
-      this.cubic.rotation.x+=0.02;
-      this.cubic.rotation.y+=0.02;
-      this.cubic.rotation.z+=0.02;
-
-    
+      //正方體旋轉的方向和速度
+      this.cubic.rotation.x+=this.x
+      this.cubic.rotation.y+=this.y
+      this.cubic.rotation.z+=this.z
       //必須有這句話才能渲染出來
+      // delta = this.clock.getDelta();
+      // this.orbitControls.update(delta);
+      //軌道控制器
+      this.controls.autoRotate = true;
+      this.controls.autoRotateSpeed = 1;
+      this.controls.target = new THREE.Vector3(.5, .5, .5);
+
+      this.controls.update();
       this.renderer.render(this.scene,this.camera)
     },
     render(){
