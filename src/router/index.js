@@ -3,14 +3,14 @@ import Router from 'vue-router'
 
 Vue.use(Router);
 const routes = [
-  {
-    path: '/',
-    name: 'threeMap',
-    component: r => require.ensure([], () => r(require('../components/threeMap/fac')), 'threeMap'),
-    meta: {
-      title: '三维地图'
-    }
-  },
+  // {
+  //   path: '/',
+  //   name: 'threeMap',
+  //   component: r => require.ensure([], () => r(require('../components/threeMap/fac')), 'threeMap'),
+  //   meta: {
+  //     title: '三维地图'
+  //   }
+  // },
   {
     path: '/street',
     name: 'street',
@@ -47,6 +47,11 @@ const routes = [
     path: '/alarmPage',
     name: 'alarmPage',
     component: r => require.ensure([], () => r(require('../components/alarmPage/alarmPage')), 'alarmPage'),
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: r => require.ensure([], () => r(require('../components/threeMap/test')), 'test'),
   },
 ];
 const router = new Router({
