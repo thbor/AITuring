@@ -4,9 +4,12 @@
   </div>
 </template>
 <script>
- import * as THREE from "three";
-  import {CSS2DRenderer, CSS2DObject} from 'three-css2drender';
+import * as THREE from "three";
+import {CSS2DRenderer, CSS2DObject} from 'three-css2drender';
+import * as dat from 'dat.gui';
+import datUI from './datUI'
 const OrbitControls = require('three-orbit-controls')(THREE);
+
 export default {
   data(){
     return{
@@ -26,6 +29,7 @@ export default {
       container:"",
       height:"",
       width:"",
+      gui:""
 
     }
   },
@@ -37,7 +41,16 @@ export default {
     // this.addObj(0,0,40)
     // this.addCubic();
     // this.rotate()
+    // this.initOrbitControls()
+    this.initDatUI()
     this.animate()
+  },
+  watch:{
+    gui:function(val){
+      console.log("改變了",val)
+      // this.gui = val;
+      // this.gui.add(val,'x')
+    }
   },
   methods:{
     init(){
@@ -98,13 +111,38 @@ export default {
       
     },
     addCubic(){
-      
       var box=new THREE.BoxGeometry(5,5,5);//创建一个立方体几何对象
       var material=new THREE.MeshLambertMaterial({color:0x0000ff});//材质对象
       this.cubic=new THREE.Mesh(box,material);//网格模型对象
       
       // mesh.rotateX(Math.PI/4);//绕x轴旋转π/4
       this.scene.add(this.cubic)
+    },
+      //参数调试工具初始化
+    initDatUI(){
+        this.gui = new dat.GUI();
+        this.gui.add(datUI,'message').name('消息');
+        this.gui.add(datUI,'speed',-20,20);
+        this.gui.add(datUI,'displayOutline');
+        this.gui.add(datUI,"lightY",0,100);
+        this.gui.add(datUI,"sphereX",-30,30);
+        this.gui.add(datUI,"sphereZ",-30,30);
+        this.gui.add(datUI,"cubeX",0,60);
+        this.gui.add(datUI,"cubeZ",-30,30);
+        this.gui.remember(datUI);
+        this.gui.add(datUI, 'speed'); 
+        console.log(1,datUI)
+        // datUI.speed = this.gui.speed
+        
+      },
+    initOrbitControls(){
+      this.controls.autoRotate = true;
+      this.controls.autoRotateSpeed = 1;
+      //围绕目标旋转的速度将有多快，默认值为2.0
+      this.controls.autoRotateSpeed =  datUI.speed;
+      // this.controls.target = new THREE.Vector3(this.x, this.y, this.z);
+
+      this.controls.update();
     },
     animate(){
      //旋轉
@@ -117,11 +155,7 @@ export default {
       // delta = this.clock.getDelta();
       // this.orbitControls.update(delta);
       //軌道控制器
-      this.controls.autoRotate = true;
-      this.controls.autoRotateSpeed = 1;
-      this.controls.target = new THREE.Vector3(this.x, this.y, this.z);
-
-      this.controls.update();
+      this.initOrbitControls();
       this.renderer.render(this.scene,this.camera)
     },
     render(){
